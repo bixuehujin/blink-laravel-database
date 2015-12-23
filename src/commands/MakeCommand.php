@@ -2,13 +2,13 @@
 
 namespace blink\laravel\database\commands;
 
-use \Illuminate\Database\Migrations\DatabaseMigrationRepository;
-use \Illuminate\Database\Migrations\MigrationCreator;
-use \Illuminate\Database\Migrations\Migrator;
+
 use \Illuminate\Filesystem\Filesystem;
 use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
+use blink\laravel\database\migrations\MigrationCreator;
 
 
 class MakeCommand extends BaseCommand
@@ -18,7 +18,14 @@ class MakeCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeMigration($input->getArgument('name'));
+        $table = $input->getOption('table');
+        $create = $input->getOption('create');
+
+        if (!$table && is_string($create)) {
+            $table = $create;
+        }
+
+        $this->writeMigration($input->getArgument('name'), $table, $create);
     }
 
     /**
@@ -41,6 +48,13 @@ class MakeCommand extends BaseCommand
         $this->line("<info>Created Migration:</info> $file");
     }
 
+    public function options()
+    {
+        return [
+            ['create', NULL, InputOption::VALUE_NONE, 'The table to be created'],
+            ['table', NULL, InputOption::VALUE_OPTIONAL, 'The table to be migrated'],
+        ];
+    }
 
     public function arguments()
     {
