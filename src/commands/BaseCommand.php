@@ -2,8 +2,10 @@
 
 namespace blink\laravel\database\commands;
 
-
 use blink\core\console\Command;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 
 /**
  * Class BaseCommand
@@ -26,6 +28,31 @@ class BaseCommand extends Command
     protected function getMigrationPath()
     {
         return $this->blink->root . '/src/migrations';
+    }
+
+    private $_migrator;
+
+    /**
+     * @param boolean $createIfNotExists
+     * @return Migrator
+     */
+    protected function getMigrator($createIfNotExists = false)
+    {
+
+        if ($this->_migrator) {
+            return $this->_migrator;
+        }
+
+        $capsule = app('capsule');
+        $connectionResolver = $capsule->getDatabaseManager();
+
+        $repository = new DatabaseMigrationRepository($connectionResolver, 'migrations');
+
+        if($createIfNotExists && !$repository->repositoryExists()) {
+            $repository->createRepository();
+        }
+
+        return $this->_migrator = new Migrator($repository, $connectionResolver, new Filesystem);
     }
 
 

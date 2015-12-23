@@ -18,16 +18,7 @@ class MigrateCommand extends BaseCommand
     {
         app()->bootstrap();
 
-        $capsule = app('capsule');
-        $connectionResolver = $capsule->getDatabaseManager();
-
-        $repository = new DatabaseMigrationRepository($connectionResolver, 'migrations');
-
-        if(!$repository->repositoryExists()) {
-            $repository->createRepository();
-        }
-
-        $migrator = new Migrator($repository, $connectionResolver, new Filesystem);
+        $migrator = $this->getMigrator(true);
 
         return $migrator->run($this->getMigrationPath());
     }
