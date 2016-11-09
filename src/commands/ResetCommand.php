@@ -27,7 +27,7 @@ class ResetCommand extends BaseCommand
             return;
         }
 
-        $migrator->reset(false);
+        $migrator->reset($this->getMigrationPath(), false);
 
         foreach ($migrator->getNotes() as $note) {
             $output->writeln($note);
