@@ -48,14 +48,4 @@ class Manager extends BaseManager implements Configurable
         $this->setAsGlobal();
         $this->bootEloquent();
     }
-
-    /**
-     * @inheritdoc
-     */
-    protected function setupManager()
-    {
-        $factory = new ConnectionFactory($this->container);
-
-        $this->manager = new DatabaseManager($this->container, $factory);
-    }
 }
