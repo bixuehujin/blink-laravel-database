@@ -5,6 +5,7 @@ namespace blink\laravel\database;
 use blink\core\Configurable;
 use blink\core\ObjectTrait;
 use Illuminate\Database\Capsule\Manager as BaseManager;
+use Illuminate\Events\Dispatcher;
 
 /**
  * Class Manager
@@ -40,6 +41,8 @@ class Manager extends BaseManager implements Configurable
         foreach ($this->connections as $key => $config) {
             $this->addConnection($config, $key);
         }
+
+        $this->setEventDispatcher(new Dispatcher($this->getContainer()));
 
         $this->setAsGlobal();
         $this->bootEloquent();
