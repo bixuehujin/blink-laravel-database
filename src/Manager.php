@@ -5,6 +5,7 @@ namespace blink\laravel\database;
 use blink\core\Configurable;
 use blink\core\ObjectTrait;
 use Illuminate\Database\Capsule\Manager as BaseManager;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Events\Dispatcher;
 
 /**
@@ -46,5 +47,15 @@ class Manager extends BaseManager implements Configurable
 
         $this->setAsGlobal();
         $this->bootEloquent();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function setupManager()
+    {
+        $factory = new ConnectionFactory($this->container);
+
+        $this->manager = new DatabaseManager($this->container, $factory);
     }
 }
