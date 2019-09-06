@@ -27,6 +27,6 @@ class ResetCommand extends BaseCommand
             return;
         }
 
-        $migrator->reset($this->getMigrationPath(), false);
+        $migrator->reset((array)$this->getMigrationPath(), false);
     }
 }
