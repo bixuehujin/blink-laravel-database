@@ -7,6 +7,7 @@ use blink\core\ObjectTrait;
 use Illuminate\Database\Capsule\Manager as BaseManager;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Class Manager
@@ -43,9 +44,14 @@ class Manager extends BaseManager implements Configurable
             $this->addConnection($config, $key);
         }
 
-        $this->setEventDispatcher(new Dispatcher($this->getContainer()));
+        $container = $this->getContainer();
+        $container['db'] = $this;
+        
+        $this->setEventDispatcher(new Dispatcher($container));
 
         $this->setAsGlobal();
         $this->bootEloquent();
+        
+        Schema::setFacadeApplication($container);
     }
 }
