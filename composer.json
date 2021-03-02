@@ -9,7 +9,7 @@
     ],
     "require": {
         "symfony/console": "^3.0",
-        "illuminate/console": "^5.3",
+        "illuminate/console": "^5.3 || ^5.4",
         "illuminate/filesystem": "^5.3",
         "illuminate/database": "^5.3",
         "illuminate/validation": "^5.3",
