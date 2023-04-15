@@ -56,6 +56,9 @@ class Manager extends BaseManager implements Configurable
     {
         $factory = new ConnectionFactory($this->container);
 
-        $this->manager = new DatabaseManager($this->container, $factory);
+        MockedApp::setInstance($this->container);
+
+        $app = new MockedApp();
+        $this->manager = new DatabaseManager($app, $factory);
     }
 }
