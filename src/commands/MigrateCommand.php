@@ -14,12 +14,14 @@ class MigrateCommand extends BaseCommand
     public $name = 'migrate';
     public $description = 'Run the database migrations';
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         app()->bootstrap();
 
         $migrator = $this->getMigrator(true);
 
-        return $migrator->run($this->getMigrationPath());
+        $migrator->run($this->getMigrationPath());
+
+        return 0;
     }
 }

@@ -16,7 +16,7 @@ class MakeCommand extends BaseCommand
     public $name = 'migrate:make';
     public $description = 'Run the database migrations';
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $table = $input->getOption('table');
         $create = $input->getOption('create');
@@ -26,6 +26,8 @@ class MakeCommand extends BaseCommand
         }
 
         $this->writeMigration($input->getArgument('name'), $table, $create);
+
+        return 0;
     }
 
     /**

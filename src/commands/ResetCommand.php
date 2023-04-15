@@ -16,7 +16,7 @@ class ResetCommand extends BaseCommand
     public $name = 'migrate:reset';
     public $description = 'Rollback all database migrations';
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         app()->bootstrap();
 
@@ -24,7 +24,7 @@ class ResetCommand extends BaseCommand
 
         if (!$this->migrator->repositoryExists()) {
             $output->writeln('<comment>Migration table not found.</comment>');
-            return;
+            return 1;
         }
 
         $migrator->reset($this->getMigrationPath(), false);
@@ -32,5 +32,7 @@ class ResetCommand extends BaseCommand
         foreach ($migrator->getNotes() as $note) {
             $output->writeln($note);
         }
+
+        return 0;
     }
 }

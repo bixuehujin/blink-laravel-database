@@ -4,9 +4,16 @@ namespace blink\laravel\database;
 
 use blink\core\Configurable;
 use blink\core\ObjectTrait;
+use Illuminate\Config\Repository;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Config\Repository as ConfigContract;
 use Illuminate\Database\Capsule\Manager as BaseManager;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
+use PhpCsFixer\ConfigInterface;
+use Illuminate\Database\DatabaseServiceProvider;
 
 /**
  * Class Manager
@@ -25,7 +32,9 @@ class Manager extends BaseManager implements Configurable
 
     public function __construct($config = [])
     {
-        parent::__construct();
+        $instance = MockedApp::getInstance();
+
+        parent::__construct($instance);
 
         foreach ($config as $name => $value) {
             $this->$name = $value;
@@ -38,15 +47,14 @@ class Manager extends BaseManager implements Configurable
     {
         $this->container['config']['database.fetch'] = $this->fetch;
         $this->container['config']['database.default'] = $this->default;
-
-        foreach ($this->connections as $key => $config) {
-            $this->addConnection($config, $key);
-        }
+        $this->container['config']['database.connections'] = $this->connections;
 
         $this->setEventDispatcher(new Dispatcher($this->getContainer()));
 
         $this->setAsGlobal();
         $this->bootEloquent();
+
+        (new DatabaseServiceProvider(MockedApp::getInstance()))->register();
     }
 
     /**
@@ -56,9 +64,9 @@ class Manager extends BaseManager implements Configurable
     {
         $factory = new ConnectionFactory($this->container);
 
-        MockedApp::setInstance($this->container);
-
-        $app = new MockedApp();
+        $app = MockedApp::getInstance();
         $this->manager = new DatabaseManager($app, $factory);
+
+        Schema::setFacadeApplication($app);
     }
 }
