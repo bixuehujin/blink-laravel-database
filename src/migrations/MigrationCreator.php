@@ -11,7 +11,7 @@ use Illuminate\Database\Migrations\MigrationCreator as BaseCreator;
  */
 class MigrationCreator extends BaseCreator
 {
-    public function getStubPath()
+    public function stubPath()
     {
         return __DIR__ . '/stubs';
     }

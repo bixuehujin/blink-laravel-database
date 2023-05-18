@@ -41,7 +41,7 @@ class MakeCommand extends BaseCommand
     protected function writeMigration($name, $table = null, $create = null)
     {
 
-        $creator = new MigrationCreator(new Filesystem());
+        $creator = new MigrationCreator(new Filesystem(), '');
 
         $path = $this->getMigrationPath();
 
