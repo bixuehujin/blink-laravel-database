@@ -17,7 +17,7 @@
         "illuminate/config": "^8.0"
     },
     "require-dev": {
-        "blink/blink": "dev-php8"
+        "blink/blink": "dev-v1"
     },
     "autoload": {
         "psr-4": {
