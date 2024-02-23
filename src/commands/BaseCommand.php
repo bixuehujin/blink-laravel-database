@@ -27,7 +27,7 @@ class BaseCommand extends Command
 
     protected function getMigrationPath()
     {
-        return $this->blink->root . '/src/migrations';
+        return config('app.root') . '/src/migrations';
     }
 
     private $_migrator;
@@ -43,8 +43,7 @@ class BaseCommand extends Command
             return $this->_migrator;
         }
 
-        $capsule = app('capsule');
-        $connectionResolver = $capsule->getDatabaseManager();
+        $connectionResolver = capsule()->getDatabaseManager();
 
         $repository = new DatabaseMigrationRepository($connectionResolver, 'migrations');
 

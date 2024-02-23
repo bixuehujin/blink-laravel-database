@@ -2,6 +2,7 @@
 
 namespace blink\laravel\database;
 
+use blink\di\Container;
 use PDOException;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
@@ -37,7 +38,7 @@ class ConnectionFactory extends BaseConnectionFactory
                     return $this->createConnector($config)->connect($config);
                 } catch (PDOException $e) {
                     if (count($hosts) - 1 === $key) {
-                        app()->errorHandler->handleException($e);
+                        Container::$global->get('errorHandler')->handleException($e);
                     }
                 }
             }
