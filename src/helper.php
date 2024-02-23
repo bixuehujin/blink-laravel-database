@@ -1,11 +1,10 @@
 <?php
 
-/**
- * @return \Illuminate\Database\Capsule\Manager
- */
-function capsule()
+use blink\laravel\database\Manager;
+
+function capsule(): Manager
 {
-    return app('capsule');
+    return app()->get(Manager::class);
 }
 
 /**
@@ -14,7 +13,7 @@ function capsule()
  */
 function capsule_conn($name = null)
 {
-    return app('capsule')->connection($name);
+    return capsule()->connection($name);
 }
 
 /**
@@ -23,7 +22,7 @@ function capsule_conn($name = null)
  */
 function capsule_schema($name = null)
 {
-    return app('capsule')->connection($name)->getSchemaBuilder();
+    return capsule()->connection($name)->getSchemaBuilder();
 }
 
 /**
@@ -33,7 +32,7 @@ function capsule_schema($name = null)
  */
 function validate($data, $rules)
 {
-    $validator = new \Illuminate\Validation\Validator(app('i18n'), $data, $rules);
+    $validator = new \Illuminate\Validation\Validator(app()->get('i18n'), $data, $rules);
 
     $validator->setPresenceVerifier(new \Illuminate\Validation\DatabasePresenceVerifier(capsule()->getDatabaseManager()));
 
