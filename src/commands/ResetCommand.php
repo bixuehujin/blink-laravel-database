@@ -13,25 +13,19 @@ use \Symfony\Component\Console\Output\OutputInterface;
 
 class ResetCommand extends BaseCommand
 {
-    public $name = 'migrate:reset';
-    public $description = 'Rollback all database migrations';
+    public string $name = 'migrate:reset';
+    public string $description = 'Rollback all database migrations';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        app()->bootstrap();
-
         $migrator = $this->getMigrator();
 
-        if (!$this->migrator->repositoryExists()) {
+        if (!$migrator->repositoryExists()) {
             $output->writeln('<comment>Migration table not found.</comment>');
             return 1;
         }
 
         $migrator->reset($this->getMigrationPath(), false);
-
-        foreach ($migrator->getNotes() as $note) {
-            $output->writeln($note);
-        }
 
         return 0;
     }

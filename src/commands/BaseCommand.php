@@ -2,7 +2,7 @@
 
 namespace blink\laravel\database\commands;
 
-use blink\core\console\Command;
+use blink\console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;

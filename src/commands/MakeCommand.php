@@ -13,8 +13,8 @@ use blink\laravel\database\migrations\MigrationCreator;
 
 class MakeCommand extends BaseCommand
 {
-    public $name = 'migrate:make';
-    public $description = 'Run the database migrations';
+    public string $name = 'migrate:make';
+    public string $description = 'Run the database migrations';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

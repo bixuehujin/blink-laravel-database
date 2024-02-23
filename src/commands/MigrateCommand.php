@@ -11,13 +11,11 @@ use \Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateCommand extends BaseCommand
 {
-    public $name = 'migrate';
-    public $description = 'Run the database migrations';
+    public string $name = 'migrate';
+    public string $description = 'Run the database migrations';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        app()->bootstrap();
-
         $migrator = $this->getMigrator(true);
 
         $migrator->run($this->getMigrationPath());
